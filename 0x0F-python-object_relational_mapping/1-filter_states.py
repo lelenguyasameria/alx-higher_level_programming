@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Lists all states with a name starting with N (upper N) from the database hbtn_0e_0_usa.
+Lists all states from the database hbtn_0e_0_usa where the name starts with 'N'.
 """
 
 import MySQLdb
@@ -8,7 +8,7 @@ import sys
 
 if __name__ == "__main__":
     """
-    Script that lists all states with a name starting with N (upper N) from the database hbtn_0e_0_usa.
+    Script that lists all states from the database hbtn_0e_0_usa where the name starts with 'N'.
 
     Usage:
         ./script.py <username> <password> <db_name>
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         <db_name>: Database name.
 
     Output:
-        Prints the list of states with names starting with N in the format (id, 'state_name').
+        Prints the list of states where the name starts with 'N'.
     """
     try:
         # Connect to MySQL server
@@ -27,14 +27,13 @@ if __name__ == "__main__":
                              passwd=sys.argv[2], db=sys.argv[3], port=3306)
         cur = db.cursor()
 
-        # Execute the SQL query to fetch states with names starting with N
-        query = "SELECT * FROM states WHERE name LIKE 'N%' ORDER BY states.id"
-        cur.execute(query)
-
+        # Execute the SQL query to fetch states with names starting with 'N'
+        cur.execute("""SELECT * FROM states WHERE name LIKE BINARY 'N%' ORDER BY states.id""")
+        
         # Fetch all the rows and display the results
         rows = cur.fetchall()
         for row in rows:
-            print("({}, '{}')".format(row[0], row[1]))
+            print(row)
 
     except MySQLdb.Error as e:
         print("MySQL Error:", e)
