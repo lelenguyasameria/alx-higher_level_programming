@@ -1,33 +1,16 @@
 #!/usr/bin/python3
-"""Module containing a function to find a peak in a list of unsorted integers."""
-
 def find_peak(list_of_integers):
-    """
-    Find a peak in a list of unsorted integers.
+    """ Python function to find peak number"""
+    le = len(list_of_integers)
+    if le == 0:
+        return
+    m = le // 2
+    pivot = list_of_integers[m]
+    left = list_of_integers[m - 1]
 
-    Args:
-        list_of_integers (list): List of unsorted integers.
-
-    Returns:
-        int: A peak in the list.
-
-    Note:
-        There may be more than one peak in the list.
-    """
-    if not list_of_integers:
-        return None
-
-    low, high = 0, len(list_of_integers) - 1
-
-    while low < high:
-        mid = (low + high) // 2
-
-        if list_of_integers[mid] > list_of_integers[mid + 1]:
-            high = mid
-        else:
-            low = mid + 1
-
-    return list_of_integers[low]
-
-# Complexity: O(log(n))
-
+    if (m == le - 1 or pivot >= list_of_integers[m + 1]) and\
+            (m == 0 or pivot >= left):
+        return pivot
+    elif m != le - 1 and list_of_integers[m + 1] > pivot:
+        return (find_peak(list_of_integers[m + 1:]))
+    return (find_peak(list_of_integers[:m]))
