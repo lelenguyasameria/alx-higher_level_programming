@@ -1,15 +1,9 @@
 #!/usr/bin/node
-
-/* eslint-disable semi */
-const fs = require('fs');
-
-const filePath = process.argv[2];
-
-fs.readFile(filePath, 'utf-8', (err, data) => {
+let fs = require('fs');
+fs.readFile(process.argv[2], 'utf-8', function (err, data) {
   if (err) {
-    console.error(err);
+    console.log(err);
   } else {
     console.log(data);
   }
 });
-

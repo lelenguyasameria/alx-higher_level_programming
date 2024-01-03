@@ -1,34 +1,22 @@
 #!/usr/bin/node
+let request = require('request');
+let url = process.argv[2];
 
-const request = require('request');
-
-const apiUrl = process.argv[2];
-
-request.get(apiUrl, (error, response, body) => {
+request(url, function (error, response, body) {
   if (error) {
-    console.error(error);
+    console.log(error);
   } else {
-    try {
-      const todosData = JSON.parse(body);
-
-      // Create a map to store the number of completed tasks for each user
-      const completedTasksByUser = new Map();
-
-      // Filter only completed tasks and count them for each user
-      todosData.forEach((todo) => {
-        if (todo.completed) {
-          const userId = todo.userId;
-          completedTasksByUser.set(userId, (completedTasksByUser.get(userId) || 0) + 1);
+    let result = JSON.parse(body);
+    let dic = {};
+    for (let index = 0; index < result.length; index++) {
+      if (result[index].completed === true) {
+        if (dic[result[index].userId] === undefined) {
+          dic[result[index].userId] = 1;
+        } else {
+          dic[result[index].userId] += 1;
         }
-      });
-
-      // Print users with completed tasks
-      completedTasksByUser.forEach((completedTasks, userId) => {
-        console.log(`User ${userId} has completed ${completedTasks} tasks.`);
-      });
-    } catch (parseError) {
-      console.error(parseError);
+      }
     }
+    console.log(dic);
   }
 });
-
